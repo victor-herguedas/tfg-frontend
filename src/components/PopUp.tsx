@@ -5,9 +5,10 @@ import { PopUpContext } from "./PopUpProvider";
 
 interface Props {
     children: React.ReactNode;
+    stylesProp?: string ;
 }
 
-export default function PopUp({ children }: Props) {
+export default function PopUp({ children, stylesProp }: Props) {
     const popUpContext = useContext(PopUpContext);
     if (!popUpContext) {
         throw new Error("PopUpContext is not found");
@@ -39,7 +40,7 @@ export default function PopUp({ children }: Props) {
         <>
             <div ref={overlayRef} className={`${styles.popup} ${isActivated ? styles.active : ""}`}>
                 <div className={`${styles.overlay} `}>
-                    <div ref={contentRef} className={`${styles.content} border-2 border-white rounded-lg overflow-x-hidden overflow-y-auto flex flex-col`}>
+                    <div ref={contentRef} className={`${styles.content} border-2 border-white rounded-lg overflow-x-hidden overflow-y-auto flex flex-col ${stylesProp}`}>
                         {children}
                     </div>
                 </div>

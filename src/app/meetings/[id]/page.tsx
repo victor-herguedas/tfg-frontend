@@ -5,6 +5,7 @@ import { getRelativeDateService } from "@/utilities/relativeDateService"
 import Image from "next/image"
 import { useEffect } from "react"
 import MeetingInfo from "./components/MeetingInfo"
+import Chat from "./components/Chat"
 
 interface Props {
     params: {
@@ -43,6 +44,7 @@ const meetingLoaded = (meeting: Meeting) => {
                     <MeetingInfo transcription={meeting.transcription} summary={meeting.summary} summaryState={meeting.summaryState} transcriptionState={meeting.transcriptionState} />
                 </div>
             </div>
+            <Chat />
         </div>
     )
 }
