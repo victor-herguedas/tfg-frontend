@@ -12,9 +12,10 @@ export default function Home() {
             <div className="flex justify-center flex-wrap">
                 {
                     loading ? <LoadingMeetingPlaceholderCard/> :
-                    meetingsSumarized.map((meetingSumarized, index) => {
+                    meetingsSumarized.map((meetingSumarized) => {
                         return (
-                            <MeetingCard key={index}
+                            <MeetingCard key={meetingSumarized.id}
+                                id={meetingSumarized.id}
                                 title={meetingSumarized.name}
                                 meetingDate={new Date(meetingSumarized.meetingDate)}
                                 shortDescription={"meetingSumarized.shortDescription"}

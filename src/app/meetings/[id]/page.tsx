@@ -1,7 +1,7 @@
 'use client'
 import { useGetMeetingRepository } from "@/adapters/repositorys/meetingsRepository"
 import { Meeting } from "@/domain/models/Meeting"
-import { getRelativeDateService } from "@/utils/relativeDateService"
+import { getRelativeDateService } from "@/utilities/relativeDateService"
 import Image from "next/image"
 import { useEffect } from "react"
 import MeetingInfo from "./components/MeetingInfo"
