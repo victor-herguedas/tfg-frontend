@@ -26,7 +26,7 @@ export default function CreateMeetingCard() {
                     <p className="text-4xl">Create new</p>
                     <Image className="mx-auto mt-2 overflow-hidden"
                         alt={"picture with a plus for creating a meeting"}
-                        width={imageHeight}
+                        width={imageHeight * 1/3}
                         height={imageHeight}
                         src={imageUrl} />
                     <p className="text-4xl">Meeting</p>

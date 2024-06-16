@@ -21,10 +21,10 @@ export default function MeetingCard({ title, shortDescription, meetingDate, imag
             style={{ maxWidth: width, width: width, height: height, maxHeight: height }}
             className={`flex flex-col bg-secondaryBackground my-4 mx-2 rounded-lg border-white border-2 ${styles.meetingCard} hover:cursor-pointer hover:bg-neutral-800`}>
             <div
-                style={{ maxWidth: imageWidth, maxHeight: "90px", minHeight: "0px" }}
+                style={{ maxWidth: imageWidth, maxHeight: "90px", minHeight: "90px" }}
                 className="text-xl mx-auto mt-2 overflow-hidden text-center flex items-center uppercase"
             >
-                <h2>Reunión Matutina de victor por las mañanas cuando va a autentei</h2>
+                <h2 className="">{title}</h2>
             </div>
             <Image className="mx-auto mt-2"
                 alt={shortDescription}
@@ -41,7 +41,7 @@ export default function MeetingCard({ title, shortDescription, meetingDate, imag
             </div>
             <div
                 style={{ width: imageWidth, height: "20px"}}
-                className="mx-auto flex justify-end items-end text-primary-300"
+                className="mx-auto flex justify-end items-end text-primary-200"
             >
                 <p> {relativeMeetingDate}</p>
             </div>

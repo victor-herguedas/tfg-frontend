@@ -1,9 +1,13 @@
 'use client'
 import { loginService } from '@/domain/services/loginService';
+import { Button } from '@chakra-ui/react';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { REGISTER_ROUTE } from '@/utilities/localRoutes';
 
 export default function Login() {
+    const router = useRouter()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -24,7 +28,7 @@ export default function Login() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen">
+        <div className="flex flex-col items-center justify-center min-h-screen text-white">
             <h1 className="text-4xl mb-10">Login Page</h1>
             <Image
                 className='mb-10'
@@ -44,13 +48,14 @@ export default function Login() {
                     id='password'
                     onChange={handlePasswordChange}
                     value={password} className="text-neutral-900 pl-2" type="password" placeholder="password" />
-                <button
+                <Button
                     className="mt-6"
                     type="submit"
+                    isDisabled={!email || !password}
                     onClick={handleLogin}
-                >Login</button>
+                >Login</Button>
             </form>
-            <p className="mt-6">Don`t have an account? <a className="text-primary-400 hover:cursor-pointer">Register</a></p>
+            <p className="mt-6">Don`t have an account? <a onClick={() => {router.replace(REGISTER_ROUTE)}} className="text-primary-400 hover:cursor-pointer">Register</a></p>
         </div>
     )
 }
