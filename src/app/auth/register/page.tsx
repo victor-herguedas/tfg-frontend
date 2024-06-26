@@ -1,10 +1,11 @@
 'use client'
 import { loginService } from '@/domain/services/loginService';
-import { Button } from '@chakra-ui/react';
+import { Button, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { LOGIN_ROUTE } from '@/utilities/localRoutes';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function Register() {
     const router = useRouter()
@@ -12,6 +13,10 @@ export default function Register() {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [secret, setSecret] = useState('')
+    const [showPassword, setShowPassword] = useState(false)
+    const handleClickPasswordEye = () => setShowPassword(!showPassword)
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+    const handleClickConfirmPasswordEye = () => setShowConfirmPassword(!showConfirmPassword)
 
     const isButtonDisabled = !email || !password || !confirmPassword || !secret || password !== confirmPassword
 
@@ -35,25 +40,53 @@ export default function Register() {
             />
             <form className="flex flex-col">
                 <label htmlFor='email'>Email</label>
-                <input
+                <Input
                     id='email'
                     onChange={(event) => setEmail(event.target.value)}
-                    value={email} className="text-neutral-900 pl-2" type="text" placeholder="email" />
+                    value={email} className="text-white pl-2" type="text" placeholder="email" />
                 <label htmlFor='password' className="mt-6">Password</label>
-                <input
-                    id='password'
-                    onChange={(event) => setPassword(event.target.value)}
-                    value={password} className="text-neutral-900 pl-2" type="password" placeholder="password" />
+                <InputGroup size='md'>
+                    <Input
+                        id='password'
+                        value={password}
+                        className='text-white pl-2'
+                        onChange={(event) => setPassword(event.target.value)}
+                        pr='4.5rem'
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder='Enter password'
+                    />
+                    <InputRightElement width='4.5rem'>
+                        <Button h='1.75rem' size='sm' onClick={handleClickPasswordEye}>
+                            {showPassword ?
+                                <FaEyeSlash /> :
+                                <FaEye />}
+                        </Button>
+                    </InputRightElement>
+                </InputGroup>
                 <label htmlFor='confirmPassword' className="mt-6">Confirm Password</label>
-                <input
-                    id='confirmPassword'
-                    onChange={(event) => setConfirmPassword(event.target.value)}
-                    value={confirmPassword} className="text-neutral-900 pl-2" type="password" placeholder="password" />
+                <InputGroup size='md'>
+                    <Input
+                        id='confirmPassword'
+                        value={confirmPassword}
+                        className='text-white pl-2'
+                        onChange={(event) => setConfirmPassword(event.target.value)}
+                        pr='4.5rem'
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        placeholder='Confirm password'
+                    />
+                    <InputRightElement width='4.5rem'>
+                        <Button h='1.75rem' size='sm' onClick={handleClickConfirmPasswordEye}>
+                            {showConfirmPassword ?
+                                <FaEyeSlash /> :
+                                <FaEye />}
+                        </Button>
+                    </InputRightElement>
+                </InputGroup>
                 <label htmlFor='secretCode' className="mt-6">Secret code</label>
-                <input
+                <Input
                     id='secretCode'
                     onChange={(event) => setSecret(event.target.value)}
-                    value={secret} className="text-neutral-900 pl-2" type="text" placeholder="secretCode" />
+                    value={secret} className="text-white pl-2" type="text" placeholder="secretCode" />
 
                 <Button
                     className="mt-6"
@@ -62,7 +95,7 @@ export default function Register() {
                     isDisabled={isButtonDisabled}
                 >Register</Button>
             </form>
-            <p className="mt-6">Already have an account? <a onClick={() => {router.replace(LOGIN_ROUTE)}} className="text-primary-400 hover:cursor-pointer">Login</a></p>
+            <p className="mt-6">Already have an account? <a onClick={() => { router.replace(LOGIN_ROUTE) }} className="text-primary-400 hover:cursor-pointer">Login</a></p>
         </div>
     )
 }

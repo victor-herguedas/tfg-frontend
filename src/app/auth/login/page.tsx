@@ -1,22 +1,31 @@
 'use client'
 import { loginService } from '@/domain/services/loginService';
-import { Button } from '@chakra-ui/react';
+import { Button, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { REGISTER_ROUTE } from '@/utilities/localRoutes';
+import { MEETINGS_ROUTE, REGISTER_ROUTE } from '@/utilities/localRoutes';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function Login() {
     const router = useRouter()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    const [showPassword, setShow] = useState(false)
+    const handleClickPasswordEye = () => setShow(!showPassword)
 
-    const handleLogin = (e: 
+
+    const handleLogin = async (e:
         React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
-        e.preventDefault()
-        loginService({ email, password })
+        try {
+            e.preventDefault()
+            await loginService({ email, password })
+            router.push(MEETINGS_ROUTE)
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,15 +48,29 @@ export default function Login() {
             />
             <form className="flex flex-col">
                 <label htmlFor='email'>Email</label>
-                <input
+                <Input
                     id='email'
                     onChange={handleEmailChange}
-                    value={email} className="text-neutral-900 pl-2" type="text" placeholder="email" />
+                    value={email} className="text-white pl-2" type="text" placeholder="email" />
                 <label htmlFor='password' className="mt-6">Password</label>
-                <input
-                    id='password'
-                    onChange={handlePasswordChange}
-                    value={password} className="text-neutral-900 pl-2" type="password" placeholder="password" />
+                <InputGroup size='md'>
+                    <Input
+                        id='password'
+                        value={password}
+                        className='text-white pl-2'
+                        onChange={handlePasswordChange}
+                        pr='4.5rem'
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder='Enter password'
+                    />
+                    <InputRightElement width='4.5rem'>
+                        <Button h='1.75rem' size='sm' onClick={handleClickPasswordEye}>
+                            {showPassword ? 
+                            <FaEyeSlash/> : 
+                            <FaEye/>}
+                        </Button>
+                    </InputRightElement>
+                </InputGroup>
                 <Button
                     className="mt-6"
                     type="submit"
@@ -55,7 +78,7 @@ export default function Login() {
                     onClick={handleLogin}
                 >Login</Button>
             </form>
-            <p className="mt-6">Don`t have an account? <a onClick={() => {router.replace(REGISTER_ROUTE)}} className="text-primary-400 hover:cursor-pointer">Register</a></p>
+            <p className="mt-6">Don`t have an account? <a onClick={() => { router.replace(REGISTER_ROUTE) }} className="text-primary-400 hover:cursor-pointer">Register</a></p>
         </div>
     )
 }

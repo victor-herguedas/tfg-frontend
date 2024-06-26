@@ -2,7 +2,7 @@
 import { FormEventHandler, useEffect, useRef, useState } from "react"
 import styles from "./MeetingCard.module.css"
 import Image from "next/image"
-import { Button } from "@chakra-ui/react"
+import { Button, Input } from "@chakra-ui/react"
 import { useAddMeetingsRepository } from "@/adapters/repositorys/meetingsRepository"
 import { useRouter } from "next/navigation"
 import { MEETING_ROUTE } from "@/utilities/localRoutes"
@@ -24,6 +24,12 @@ export default function CreateMeetingPopUp({ isActivated, setIsActivated }: Prop
     const overlayRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
     const { meeting, loading, error, sendRequest } = useAddMeetingsRepository()
+
+    const inputStyles = {
+        "&::-webkit-calendar-picker-indicator": {
+          filter: "invert(1)"
+        }
+        }
 
     const handleClickOutside = (event: MouseEvent) => {
         if (overlayRef.current && contentRef.current && !contentRef.current.contains(event.target as Node)) {
@@ -72,7 +78,7 @@ export default function CreateMeetingPopUp({ isActivated, setIsActivated }: Prop
                     </div>
                     <h2 className="text-2xl mb-10">ADD A NEW MEETING</h2>
                     <Image
-                        className='mb-10'
+                        className='mb-5'
                         src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3ZuOTF5bWN4Z2w5N3ducGluNDA1djU3YmNpb3dpM2lubDR4dWQzbyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/FlWgXEtj5aM5G/giphy.gif"
                         alt="fire room with a dog saying its fine"
                         width={400}
@@ -83,36 +89,36 @@ export default function CreateMeetingPopUp({ isActivated, setIsActivated }: Prop
                         className="flex flex-col gap-y-6 ">
                         <div className="flex flex-col">
                             <label htmlFor="meetingName" className="text-lg">Name</label>
-                            <input
+                            <Input
                                 value={name}
                                 onChange={(event) => setName(event.target.value)}
-                                className="border-2 border-white rounded-lg p-2 text-neutral-900"
+                                className="border-2 border-white rounded-lg p-2 text-white"
                                 id="meetingName"
                                 type="text" placeholder="Meeting Name" />
                         </div>
                         <div className="flex flex-col">
                             <label htmlFor="date" className="text-lg">Date</label>
-                            <input
+                            <Input
                                 value={date}
                                 onChange={(event) => setDate(event.target.value)}
-                                className="border-2 border-white rounded-lg p-2 text-neutral-900"
+                                className="border-2 border-white rounded-lg p-2 text-white"
                                 id="date"
+                                css={inputStyles}
                                 type="date" />
                         </div>
                         <div className="flex flex-col text-white">
                             <label htmlFor="file" className="text-lg">Mp3 File</label>
-                            <input
+                            <Input
                                 onChange={(event) => setAudio(event.target.files?.[0])}
-                                className="border-2 border-white rounded-lg p-2"
+                                className="border-2 border-white rounded-lg pt-1 text-white"
                                 id="file"
                                 accept=".mp3"
                                 type="file" placeholder="mp3 File" />
                         </div>
                         <Button
                             type="submit"
-                            colorScheme="blue"
                             variant="solid"
-                            className="rounded-lg"
+                            className="rounded-lg mt-5"
                             isDisabled={!isFormActive}
                             isLoading={loading}
                         >Add meeting</Button>

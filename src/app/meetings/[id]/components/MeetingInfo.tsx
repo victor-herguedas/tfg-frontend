@@ -53,7 +53,6 @@ const SummaryComponent = ({summary, summaryState}: SummaryComponentProps) => {
         </div>
     } else if (summaryState === SummaryState.WAITING) {
         return <Button
-            colorScheme="blue"
             className="w-full mt-6"
         >Generate a summmary</Button>
     }

@@ -29,6 +29,7 @@
     background: #000000;
     width: 450px;
     max-height: 90%;
+    min-width: 450px;
     z-index: 2;
     text-align: center;
     padding: 20px;

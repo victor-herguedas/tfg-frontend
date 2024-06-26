@@ -25,7 +25,7 @@ export const loginService = async ({ email, password }: Props) => {
             throw new Error('Login failed')
         }
 
-        } catch (error) {
+    } catch (error) {
         throw error
     }
 }
