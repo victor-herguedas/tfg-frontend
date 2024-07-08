@@ -3,13 +3,14 @@ import { getRelativeDateService } from "@/utilities/relativeDateService";
 import styles from "./MeetingCard.module.css"
 import { useRouter } from "next/navigation";
 import { MEETING_ROUTE } from "@/utilities/localRoutes";
+import ImageWithLoader from "@/components/ImageWithLoader";
 
 interface Props {
     id: string
     title: string
     shortDescription: string
     meetingDate: Date
-    imageUrl?: string
+    imageUrl: string | undefined | null
 }
 
 export default function MeetingCard({ id ,title, shortDescription, meetingDate, imageUrl = "https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" }: Props) {
@@ -31,13 +32,16 @@ export default function MeetingCard({ id ,title, shortDescription, meetingDate, 
             >
                 <h2 className="">{title}</h2>
             </div>
-            <Image className="mx-auto mt-2"
-                alt={shortDescription}
-                width={imageWidth}
-                height={imageHeight}
-                src={imageUrl} />
+            <div className="mx-auto mt-2">
+                <ImageWithLoader
+                    imageUrl={imageUrl}
+                    imageWidth={imageWidth}
+                    imageHeight={imageHeight}
+                    alt={shortDescription}
+                />
+            </div>
             <div
-                style={{ width: imageWidth, maxHeight: "150px", minHeight: "150px" }}
+                style={{ width: imageWidth, maxHeight: "144px", minHeight: "144px" }}
                 className="overflow-hidden m-3 text-sm">
                 <p className="">{shortDescription} this is so good
                     notice for you men

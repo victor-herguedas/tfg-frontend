@@ -1,8 +1,4 @@
-export enum TranscriptionState {
-    IN_PROGRESS = "IN_PROGRESS",
-    COMPLETED = "COMPLETED",
-    FAILED = "FAILED",
-}
+import { ImageState, ShortDescriptionState, TranscriptionState } from "./Meeting";
 
 export class MeetingSummarized {
     constructor(
@@ -10,6 +6,10 @@ export class MeetingSummarized {
         public createdAt: Date,
         public meetingDate: Date,
         public name: string,
-        public transcriptionState: string,
+        public transcriptionState: TranscriptionState,
+        public shortDescription: string | null,
+        public shortDescriptionState: ShortDescriptionState,
+        public imageUrl: string | null,
+        public imageState: ImageState
     ) { }
 }

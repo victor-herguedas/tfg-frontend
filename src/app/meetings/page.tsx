@@ -28,7 +28,8 @@ export default function Home() {
                                     id={meetingSumarized.id}
                                     title={meetingSumarized.name}
                                     meetingDate={new Date(meetingSumarized.meetingDate)}
-                                    shortDescription={"meetingSumarized.shortDescription"}
+                                    shortDescription={meetingSumarized.shortDescription ?? "No description"}
+                                    imageUrl={meetingSumarized.imageUrl}
                                 />
                             )
                         })

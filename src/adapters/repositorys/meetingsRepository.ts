@@ -17,6 +17,7 @@ export const useGetMeetingsRepository = ({ name }: Props) => {
         const fetchMeetings = async () => {
             try {
                 setLoading(true)
+                setError(null)
                 const response = await fetch(`${NEXT_PUBLIC_API_URL}/meetings${name !== "" ? "?name="+name : ""} `,
                     {
                         method: "GET",
