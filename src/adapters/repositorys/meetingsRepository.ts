@@ -1,5 +1,4 @@
 'use client'
-import { MeetingSummarized } from "@/domain/models/MeetingSumarized"
 import { useCallback, useEffect, useState } from "react"
 // import { getMeetingSummarizedEntity } from "../entitys/meetingEntity"
 import { NEXT_PUBLIC_API_URL } from "@/utilities/environment"
@@ -10,7 +9,7 @@ interface Props {
 }
 
 export const useGetMeetingsRepository = ({ name }: Props) => {
-    const [meetingsSumarized, setMeetings] = useState<MeetingSummarized[]>([])
+    const [meetings, setMeetings] = useState<Meeting[]>([])
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<any>(null)
     useEffect(() => {
@@ -31,7 +30,7 @@ export const useGetMeetingsRepository = ({ name }: Props) => {
                 if (response.status !== 200) {
                     throw new Error(meetingsEntitys.message)
                 }
-                setMeetings(meetingsEntitys as MeetingSummarized[])
+                setMeetings(meetingsEntitys as Meeting[])
             } catch (error) {
                 setError(error)
             } finally {
@@ -41,7 +40,7 @@ export const useGetMeetingsRepository = ({ name }: Props) => {
         fetchMeetings()
     }, [name])
 
-    return { meetingsSumarized, loading, error }
+    return { meetings, loading, error }
 }
 
 interface useGetMeetingRepositoryProps {
@@ -78,6 +77,49 @@ export const useGetMeetingRepository = ({ id }: useGetMeetingRepositoryProps) =>
 }
 
 export const useAddMeetingsRepository = () => {
+    const [meeting, setMeeting] = useState<Meeting | null>(null)
+    const [loading, setLoading] = useState<boolean>(false)
+    const [error, setError] = useState<any>(null)
+
+    interface Props {
+        name: string
+        date: Date
+        audio: Blob
+    }
+
+    const sendRequest = useCallback(async ({ name, date, audio }: Props) => {
+        const formatedDate = date.toISOString().split("T")[0]
+        try {
+            const formData = new FormData()
+            formData.append("name", name)
+            formData.append("date", formatedDate)
+            formData.append("audio", audio)
+
+            setLoading(true)
+            const response = await fetch(`${NEXT_PUBLIC_API_URL}/meetings/`,
+                {
+                    method: "POST",
+                    headers: {
+                        contentType: "multipart/form-data",
+                    },
+                    credentials: "include",
+                    body: formData,
+                }
+            )
+            const meetingsEntity = await response.json()
+            setMeeting(meetingsEntity as Meeting)
+        } catch (error) {
+            setError(error)
+        } finally {
+            setLoading(false)
+        }
+    }, [])
+
+    return { meeting, loading, error, sendRequest }
+}
+
+
+export const useGenerateMeetingsSummaryRepository = () => {
     const [meeting, setMeeting] = useState<Meeting | null>(null)
     const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<any>(null)

@@ -33,13 +33,13 @@ const meetingLoaded = (meeting: Meeting) => {
             <div className="w-3/4 sm:w-3/4 lg:w-3/5 xl:w-3/6">
                 <h1 className="text-5xl text-primary-200">{meeting.name}</h1>
                 <p className="text-sm">{getRelativeDateService(new Date(meeting.meetingDate))}</p>
-                <p className="mt-6">{meeting.shortDescription}</p>
+                <p className="mt-6">{meeting.summary}</p>
                 <div className="flex justify-center">
                 <ImageWithLoader
                     imageUrl={meeting.imageUrl}
                     imageWidth={10000}
                     imageHeight={10000}
-                    alt={meeting.shortDescription ?? "Loading..."}
+                    alt={meeting.summary ?? "Loading..."}
                 />
                 </div>
                 <div className="w-full mt-6">

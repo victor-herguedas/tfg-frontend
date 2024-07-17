@@ -9,7 +9,7 @@ import { useState } from "react";
 
 export default function Home() {
     const [name, setName] = useState<string>("")
-    const { meetingsSumarized, loading, error } = useGetMeetingsRepository({name})
+    const { meetings, loading, error } = useGetMeetingsRepository({name})
 
     return (
         <div className="text-white">
@@ -22,14 +22,14 @@ export default function Home() {
                 }
                 {
                     loading ? <LoadingMeetingPlaceholderCard /> :
-                        meetingsSumarized.map((meetingSumarized) => {
+                        meetings.map((meetings) => {
                             return (
-                                <MeetingCard key={meetingSumarized.id}
-                                    id={meetingSumarized.id}
-                                    title={meetingSumarized.name}
-                                    meetingDate={new Date(meetingSumarized.meetingDate)}
-                                    shortDescription={meetingSumarized.shortDescription ?? "No description"}
-                                    imageUrl={meetingSumarized.imageUrl}
+                                <MeetingCard key={meetings.id}
+                                    id={meetings.id}
+                                    title={meetings.name}
+                                    meetingDate={new Date(meetings.meetingDate)}
+                                    summary={meetings.summary ?? "No description"}
+                                    imageUrl={meetings.imageUrl}
                                 />
                             )
                         })

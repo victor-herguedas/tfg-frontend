@@ -8,12 +8,12 @@ import ImageWithLoader from "@/components/ImageWithLoader";
 interface Props {
     id: string
     title: string
-    shortDescription: string
+    summary: string
     meetingDate: Date
     imageUrl: string | undefined | null
 }
 
-export default function MeetingCard({ id ,title, shortDescription, meetingDate, imageUrl = "https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" }: Props) {
+export default function MeetingCard({ id ,title, summary, meetingDate, imageUrl = "https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" }: Props) {
     const router = useRouter()
     const relativeMeetingDate = getRelativeDateService(meetingDate)
     const width = "375px"
@@ -37,16 +37,16 @@ export default function MeetingCard({ id ,title, shortDescription, meetingDate, 
                     imageUrl={imageUrl}
                     imageWidth={imageWidth}
                     imageHeight={imageHeight}
-                    alt={shortDescription}
+                    alt={summary}
                 />
             </div>
             <div
                 style={{ width: imageWidth, maxHeight: "144px", minHeight: "144px" }}
                 className="overflow-hidden m-3 text-sm">
-                <p className="">{shortDescription} this is so good
+                <p className="">{summary} this is so good
                     notice for you men
                 </p>
-                <p className="">{shortDescription} This is so good for you guys letsd  nasdjasdja dsd. Me gusta mucho salir de la empresa y ver todas las cosas que he hecho en el día. LOLO</p>
+                <p className="">{summary} This is so good for you guys letsd  nasdjasdja dsd. Me gusta mucho salir de la empresa y ver todas las cosas que he hecho en el día. LOLO</p>
             </div>
             <div
                 style={{ width: imageWidth, height: "20px" }}
