@@ -104,7 +104,7 @@ export default function CreateMeetingPopUp({ isActivated, setIsActivated }: Prop
                                 className="border-2 border-white rounded-lg p-2 text-white"
                                 id="date"
                                 css={inputStyles}
-                                type="date" />
+                                type="datetime-local" />
                         </div>
                         <div className="flex flex-col text-white">
                             <label htmlFor="file" className="text-lg">Mp3 File</label>

@@ -1,5 +1,5 @@
 import { SummaryState, TranscriptionState } from "@/domain/models/Meeting";
-import { Button, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import { Button, Skeleton, Spinner, Stack, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 
 interface Props {
     transcription: string | null
@@ -35,12 +35,12 @@ interface SummaryComponentProps {
     summaryState: SummaryState
 }
 
-const SummaryComponent = ({summary, summaryState}: SummaryComponentProps) => {
+const SummaryComponent = ({ summary, summaryState }: SummaryComponentProps) => {
     if (summaryState === SummaryState.FAILED) {
         return <p>Failed to create a summary for this meeting</p>
-    }else if (summaryState === SummaryState.COMPLETED) {
+    } else if (summaryState === SummaryState.COMPLETED) {
         return <p>{summary}</p>
-    }else if (summaryState === SummaryState.IN_PROGRESS) {
+    } else if (summaryState === SummaryState.IN_PROGRESS) {
         return <div className="w-full flex justify-center mt-6">
             <Spinner
                 thickness="4px"
@@ -63,21 +63,19 @@ interface TranscriptionComponentProps {
     transcriptionState: TranscriptionState
 }
 
-const TranscriptionComponent = ({transcription, transcriptionState}: TranscriptionComponentProps) => {
+const TranscriptionComponent = ({ transcription, transcriptionState }: TranscriptionComponentProps) => {
     if (transcriptionState === TranscriptionState.FAILED) {
         return <p>Failed to create a summary for this meeting</p>
-    }else if (transcriptionState === TranscriptionState.COMPLETED) {
+    } else if (transcriptionState === TranscriptionState.COMPLETED) {
         return <p>{transcription}</p>
-    }else if (transcriptionState === TranscriptionState.IN_PROGRESS) {
-        return <div className="w-full flex justify-center mt-6">
-            <Spinner
-                thickness="4px"
-                speed="0.65s"
-                emptyColor="gray.200"
-                color="blue.500"
-                size={"xl"}
-                className={"w-12 h-12"}
-            />
+    } else if (transcriptionState === TranscriptionState.IN_PROGRESS) {
+        return <div className="w-full">
+            <Stack>
+                <Skeleton height='20px' />
+                <Skeleton height='20px' />
+                <Skeleton height='20px' />
+                <Skeleton height='20px' />
+            </Stack>
         </div>
     }
 }
