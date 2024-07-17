@@ -29,7 +29,9 @@ export default function Home() {
                                     title={meetings.name}
                                     meetingDate={new Date(meetings.meetingDate)}
                                     summary={meetings.summary ?? "No description"}
+                                    summaryState={meetings.summaryState}
                                     imageUrl={meetings.imageUrl}
+                                    imageState={meetings.imageState}
                                 />
                             )
                         })
