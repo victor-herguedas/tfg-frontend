@@ -10,11 +10,10 @@ import { useChatRepository } from "@/adapters/repositorys/chatRepository";
 import ChatButton from "./ChatButton";
 
 interface Props {
-    name: string;
     meetingId: string;
 }
 
-export default function Chat({ name, meetingId }: Props) {
+export default function Chat({ meetingId }: Props) {
     const [isActivated, setIsActivated] = useState<boolean>(false)
     const [newMessage, setNewMessage] = useState<string>("")
     const { chat, loading, error, sendMessage } = useChatRepository({ meetingId })
@@ -62,7 +61,7 @@ export default function Chat({ name, meetingId }: Props) {
     const filterMessages = (messages: Message[] | null): Message[] => {
         if (messages === null) {
             return welcomeMessages
-        } else{
+        } else {
             messages[0] = welcomeMessages[0]
             messages[1] = welcomeMessages[1]
         }

@@ -3,7 +3,7 @@ import { useGetMeetingRepository } from "@/adapters/repositorys/meetingsReposito
 import { Meeting, SummaryState } from "@/domain/models/Meeting"
 import { getRelativeDateService } from "@/utilities/relativeDateService"
 import Image from "next/image"
-import { useEffect } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import MeetingInfo from "./components/MeetingInfo"
 import Chat from "./components/ChatComponent"
 import ImageWithLoader from "@/components/ImageWithLoader"
@@ -18,17 +18,24 @@ interface Props {
 export default function MeetingPage({ params }: Props) {
     const { id } = params
     const { meeting, loading, error, fetchMeeting } = useGetMeetingRepository({ id })
+    const [localMeeting, setLocalMeeting] = useState<Meeting | null>(null)
 
     useEffect(() => {
         fetchMeeting()
     }, [])
 
-    if (meeting !== null) {
-        return meetingLoaded(meeting)
+    useEffect(() => {
+        if (meeting !== null) {
+            setLocalMeeting(meeting)
+        }
+    }, [meeting])
+
+    if (localMeeting !== null) {
+        return meetingLoaded(localMeeting, setLocalMeeting)
     }
 }
 
-const meetingLoaded = (meeting: Meeting) => {
+const meetingLoaded = (meeting: Meeting, setMeeting: (meeting: Meeting) => void) => {
     return (
         <div className="text-white flex flex-col justify-center items-center w-full mt-6">
             <div className="w-3/4 sm:w-3/4 lg:w-3/5 xl:w-3/6">
@@ -68,10 +75,10 @@ const meetingLoaded = (meeting: Meeting) => {
                     }
                 </div>
                 <div className="w-full mt-4">
-                    <MeetingInfo transcription={meeting.transcription} summary={meeting.summary} summaryState={meeting.summaryState} transcriptionState={meeting.transcriptionState} />
+                    <MeetingInfo meeting={meeting} setMeeting={setMeeting} />
                 </div>
             </div>
-            <Chat name="El chat de victor el cual se fue con su madre el otro día y mola mucho" meetingId={meeting.id} />
+            <Chat meetingId={meeting.id} />
         </div>
     )
 }
