@@ -1,31 +1,39 @@
 import { Todo } from "@/domain/models/Meeting";
-import { useEffect, useRef } from "react";
+import { SmallCloseIcon } from "@chakra-ui/icons";
+import { useEffect, useRef, useState } from "react";
+
+interface focusProps {
+    focusOnRender: boolean;
+    stopFocusOnRender: () => void;
+    cursorPosition: "START" | "END";
+}
 
 interface Props {
     todo: Todo;
     setTodo: (todo: Todo) => void;
     deleteTodo: (id: string) => void;
-    focusOnRender?: boolean;
-    stopFocusOnRender?: () => void;
+    splitTodo: (oldTodoId: string, oldTodo: string, newTodo: string ) => void;
+    focusProps: focusProps;
 }
 
 export default function TodoComponent({
     todo,
     setTodo,
     deleteTodo,
-    focusOnRender,
-    stopFocusOnRender,
+    splitTodo,
+    focusProps: { focusOnRender, stopFocusOnRender, cursorPosition: cursorStartPosition },
 }: Props) {
     const ref = useRef<HTMLDivElement>(null);
     const cursorPosition = useRef<number | null>(null);
+    const [isFocused, setIsFocused] = useState(false);
 
     useEffect(() => {
         if (focusOnRender && ref.current) {
             const input = ref.current;
             input.focus();
 
-            // Move cursor to the end of the text when the component is first rendered
-            setCaretPosition(input, input.textContent?.length || 0);
+            if (cursorStartPosition === "START") setCaretPosition(input, 0);
+            if (cursorStartPosition === "END") setCaretPosition(input, input.textContent?.length || 0);
 
             if (stopFocusOnRender) stopFocusOnRender();
         }
@@ -83,6 +91,18 @@ export default function TodoComponent({
     }, [todo.todo]);
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === "Enter") {
+            if (ref.current) {
+                cursorPosition.current = getCaretPosition(ref.current);
+            }
+            // Separate the text in 2 by cursor position and create a new todo with the second part
+            const newContent = e.currentTarget.textContent || "";
+            const oldTodo = newContent.slice(0, cursorPosition.current || 0);
+            const newTodo = newContent.slice(cursorPosition.current || 0, newContent.length);
+            e.preventDefault();
+            splitTodo(todo.id, oldTodo, newTodo);
+        }
+
         if (e.key === "Backspace" && todo.todo === "") {
             e.preventDefault();
             deleteTodo(todo.id);
@@ -105,10 +125,18 @@ export default function TodoComponent({
                 contentEditable
                 onInput={handleInput}
                 onKeyDown={handleKeyDown}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
                 suppressContentEditableWarning={true}
             >
                 {todo.todo}
             </div>
+            {/* Icono de cerrar, visible solo cuando el div está enfocado */}
+            <SmallCloseIcon
+                onClick={() => deleteTodo(todo.id)}
+                className={`hover:cursor-pointer transition-opacity duration-300 ${isFocused ? "opacity-100" : "opacity-0"
+                    }`}
+            />
         </div>
     );
 }

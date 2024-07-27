@@ -27,9 +27,9 @@ export default function CreateMeetingPopUp({ isActivated, setIsActivated }: Prop
 
     const inputStyles = {
         "&::-webkit-calendar-picker-indicator": {
-          filter: "invert(1)"
+            filter: "invert(1)"
         }
-        }
+    }
 
     const handleClickOutside = (event: MouseEvent) => {
         if (overlayRef.current && contentRef.current && !contentRef.current.contains(event.target as Node)) {
@@ -43,17 +43,19 @@ export default function CreateMeetingPopUp({ isActivated, setIsActivated }: Prop
         const dateFormInput = (event.target as HTMLFormElement).elements.namedItem("date") as HTMLInputElement
         const fileFormInput = (event.target as HTMLFormElement).elements.namedItem("file") as HTMLInputElement
 
-        const formData = new FormData()
         const name = nameFormInput.value
         const date = new Date(dateFormInput.value)
         const audio = fileFormInput.files?.[0] as Blob
 
-        console.log(name, date)
+        console.log(error)
         sendRequest({ name, date, audio })
     }
 
-    if (meeting !== null) {
-        router.push(MEETING_ROUTE(meeting.id))
+
+    if ((error === null) && (error === undefined)) {
+        if (meeting !== null && meeting !== undefined) {
+            router.push(MEETING_ROUTE(meeting.id))
+        }
     }
 
     const isFormActive = name !== "" && date !== "" && audio !== undefined
@@ -90,6 +92,7 @@ export default function CreateMeetingPopUp({ isActivated, setIsActivated }: Prop
                         <div className="flex flex-col">
                             <label htmlFor="meetingName" className="text-lg">Name</label>
                             <Input
+                                maxLength={600}
                                 value={name}
                                 onChange={(event) => setName(event.target.value)}
                                 className="border-2 border-white rounded-lg p-2 text-white"
@@ -115,13 +118,19 @@ export default function CreateMeetingPopUp({ isActivated, setIsActivated }: Prop
                                 accept=".mp3"
                                 type="file" placeholder="mp3 File" />
                         </div>
-                        <Button
-                            type="submit"
-                            variant="solid"
-                            className="rounded-lg mt-5"
-                            isDisabled={!isFormActive}
-                            isLoading={loading}
-                        >Add meeting</Button>
+                        <div>
+                            <Button
+                                type="submit"
+                                variant="solid"
+                                className="rounded-lg mt-5"
+                                isDisabled={!isFormActive}
+                                isLoading={loading}
+                            >Add meeting</Button>
+                            {
+                                (error !== null && error !== undefined) && 
+                                <p className="mt-2">Error to creating the meeting: {error.message}</p>
+                            }
+                        </div>
                     </form>
                 </PopUp>
             </PopUpProvider>

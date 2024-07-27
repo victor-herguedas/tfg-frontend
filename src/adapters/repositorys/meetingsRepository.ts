@@ -107,6 +107,10 @@ export const useAddMeetingsRepository = () => {
                 }
             )
             const meetingsEntity = await response.json()
+
+            if (response.status !== 200) {
+                throw new Error(meetingsEntity.message)
+            }
             setMeeting(meetingsEntity as Meeting)
         } catch (error) {
             setError(error)
