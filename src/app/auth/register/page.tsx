@@ -1,29 +1,39 @@
 'use client'
-import { loginService } from '@/domain/services/loginService';
 import { Button, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LOGIN_ROUTE } from '@/utilities/localRoutes';
+import { LOGIN_ROUTE, MEETINGS_ROUTE } from '@/utilities/localRoutes';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { registerService } from '@/domain/services/registerService';
 
 export default function Register() {
     const router = useRouter()
     const [email, setEmail] = useState('')
+    const [error, setError] = useState('')
+    const [name, setName] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-    const [secret, setSecret] = useState('')
+    const [registerCode, setRegisterCode] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const handleClickPasswordEye = () => setShowPassword(!showPassword)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const handleClickConfirmPasswordEye = () => setShowConfirmPassword(!showConfirmPassword)
 
-    const isButtonDisabled = !email || !password || !confirmPassword || !secret || password !== confirmPassword
+    const isButtonDisabled = !email || !password || !confirmPassword || !registerCode || !name || password !== confirmPassword
 
 
-    const handleRegister = () => {
-        if (password === confirmPassword) {
-            loginService({ email, password })
+    const handleRegister = async (e:
+        React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        try {
+            setError('')
+            e.preventDefault()
+            await registerService({ name, email, password, registerCode })
+            router.push(MEETINGS_ROUTE)
+        } catch (error: Error | any) {
+            setError(error.message)
+            console.error(error)
         }
     }
 
@@ -32,19 +42,24 @@ export default function Register() {
         <div className="flex flex-col items-center justify-center min-h-screen text-white">
             <h1 className="text-4xl mb-10">Register Page</h1>
             <Image
-                className='mb-10'
+                className='mb-6'
                 src="https://media2.giphy.com/media/QMHoU66sBXqqLqYvGO/giphy.gif?cid=6c09b952iud88a7u4lufuh2ehvyq0mz86o3i32g1dfrwpzo3&ep=v1_gifs_search&rid=giphy.gif&ct=g"
                 alt="fire room with a dog saying its fine"
                 width={400}
                 height={400}
             />
             <form className="flex flex-col">
-                <label htmlFor='email'>Email</label>
+                <label htmlFor='name'>Name</label>
+                <Input
+                    id='name'
+                    onChange={(event) => setName(event.target.value)}
+                    value={name} className="text-white pl-2" type="email" placeholder="name" />
+                <label htmlFor='email' className='mt-3'>Email</label>
                 <Input
                     id='email'
                     onChange={(event) => setEmail(event.target.value)}
                     value={email} className="text-white pl-2" type="text" placeholder="email" />
-                <label htmlFor='password' className="mt-6">Password</label>
+                <label htmlFor='password' className="mt-3">Password</label>
                 <InputGroup size='md'>
                     <Input
                         id='password'
@@ -63,7 +78,7 @@ export default function Register() {
                         </Button>
                     </InputRightElement>
                 </InputGroup>
-                <label htmlFor='confirmPassword' className="mt-6">Confirm Password</label>
+                <label htmlFor='confirmPassword' className="mt-3">Confirm Password</label>
                 <InputGroup size='md'>
                     <Input
                         id='confirmPassword'
@@ -82,20 +97,22 @@ export default function Register() {
                         </Button>
                     </InputRightElement>
                 </InputGroup>
-                <label htmlFor='secretCode' className="mt-6">Secret code</label>
+                {password !== confirmPassword && <p className="text-red-500">Passwords do not match</p>}
+                <label htmlFor='secretCode' className="mt-3">Secret code</label>
                 <Input
                     id='secretCode'
-                    onChange={(event) => setSecret(event.target.value)}
-                    value={secret} className="text-white pl-2" type="text" placeholder="secretCode" />
+                    onChange={(event) => setRegisterCode(event.target.value)}
+                    value={registerCode} className="text-white pl-2" type="text" placeholder="secretCode" />
 
                 <Button
-                    className="mt-6"
+                    className="mt-3"
                     type="submit"
                     onClick={handleRegister}
                     isDisabled={isButtonDisabled}
                 >Register</Button>
             </form>
-            <p className="mt-6">Already have an account? <a onClick={() => { router.replace(LOGIN_ROUTE) }} className="text-primary-400 hover:cursor-pointer">Login</a></p>
+            {error && <p className="text-red-500 mt-2">{error}</p>}
+            <p className="mt-3">Already have an account? <a onClick={() => { router.replace(LOGIN_ROUTE) }} className="text-primary-400 hover:cursor-pointer">Login</a></p>
         </div>
     )
 }

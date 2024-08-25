@@ -22,7 +22,9 @@ export const loginService = async ({ email, password }: Props) => {
             const jwt = response.headers.get('Authorization') as string
             console.log("JWT" + jwt)
         } else {
-            throw new Error('Login failed')
+            const responseData = await response.json()
+            if (responseData.message) throw new Error(responseData.message)
+            else throw new Error('login failed')
         }
 
     } catch (error) {

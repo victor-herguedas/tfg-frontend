@@ -11,7 +11,7 @@ export default function Login() {
     const router = useRouter()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-
+    const [error, setError] = useState('')
     const [showPassword, setShow] = useState(false)
     const handleClickPasswordEye = () => setShow(!showPassword)
 
@@ -21,9 +21,11 @@ export default function Login() {
     ) => {
         try {
             e.preventDefault()
+            setError('')
             await loginService({ email, password })
             router.push(MEETINGS_ROUTE)
-        } catch (error) {
+        } catch (error: Error | any) {
+            setError(error.message)
             console.error(error)
         }
     }
@@ -78,6 +80,7 @@ export default function Login() {
                     onClick={handleLogin}
                 >Login</Button>
             </form>
+            {error && <p className="text-red-500 mt-2">{error}</p>}
             <p className="mt-6">Don`t have an account? <a onClick={() => { router.replace(REGISTER_ROUTE) }} className="text-primary-400 hover:cursor-pointer">Register</a></p>
         </div>
     )
