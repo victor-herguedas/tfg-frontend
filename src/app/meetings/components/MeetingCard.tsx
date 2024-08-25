@@ -31,7 +31,7 @@ export default function MeetingCard({ id, title, summary, summaryState, meetingD
             style={{ maxWidth: width, width: width, height: height, maxHeight: height }}
             className={`flex flex-col bg-secondaryBackground my-4 mx-2 rounded-lg border-white border-2 ${styles.meetingCard} hover:cursor-pointer hover:bg-neutral-800 px-4`}>
             <div
-                style={{maxHeight: "90px", minHeight: "90px" }}
+                style={{ maxHeight: "90px", minHeight: "90px" }}
                 className="text-xl mx-auto mt-2 overflow-hidden text-center flex items-center uppercase w-full justify-center"
             >
                 <h2 className="">{title}</h2>
@@ -66,9 +66,7 @@ export default function MeetingCard({ id, title, summary, summaryState, meetingD
                 {
                     summaryState === SummaryState.COMPLETED ?
                         <>
-                            <p className="">{summary} this is so good
-                                notice for you men
-                            </p>
+                            <p className={`${styles.multilineEllipsis}`}>{summary}</p>
                         </> :
                         <>
                             <Stack>

@@ -58,3 +58,11 @@
     transition:all 100ms ease-in-out;
     transform: translate(-50%, -50%) scale(1);
 }
+
+.multilineEllipsis {
+    display: -webkit-box;         /* Necesario para habilitar -webkit-line-clamp */
+    -webkit-box-orient: vertical; /* Necesario para habilitar -webkit-line-clamp */
+    -webkit-line-clamp: 7;        /* Todavía requiere el prefijo para funcionar en algunos navegadores */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
