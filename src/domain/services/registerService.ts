@@ -9,8 +9,7 @@ interface Props {
     registerCode: string
 }
 
-export const registerService = async ({ name, email, password, registerCode }: Props) => {
-    try {
+export const registerService = async ({ name, email, password, registerCode }: Props) => {    try {
         const response = await fetch(`${NEXT_PUBLIC_API_URL}/auth/register`, {
             method: 'POST',
             headers: {

@@ -1,7 +1,7 @@
 import { Todo } from "@/domain/models/Meeting"
 import TodoComponent from "./Todo"
 import CreateTodo from "./CreateTodo"
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 
 export interface Props {
     todos: Todo[]
@@ -99,11 +99,6 @@ export default function TodosComponent({ todos, setTodos }: Props) {
 
     return (
         <>
-            <div>
-
-                *Emphasized* text.
-
-            </div>
             <div>
                 {todos.map(todo => (
                     <div key={todo.id}>

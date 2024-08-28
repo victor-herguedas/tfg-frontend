@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { LOGIN_ROUTE, MEETINGS_ROUTE } from '@/utilities/localRoutes';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { registerService } from '@/domain/services/registerService';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Register() {
     const router = useRouter()
@@ -22,6 +23,8 @@ export default function Register() {
 
     const isButtonDisabled = !email || !password || !confirmPassword || !registerCode || !name || password !== confirmPassword
 
+    const {isAuthenticated, setIsAuthenticated} = useAuth()
+
 
     const handleRegister = async (e:
         React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -30,6 +33,7 @@ export default function Register() {
             setError('')
             e.preventDefault()
             await registerService({ name, email, password, registerCode })
+            setIsAuthenticated(true)
             router.push(MEETINGS_ROUTE)
         } catch (error: Error | any) {
             setError(error.message)

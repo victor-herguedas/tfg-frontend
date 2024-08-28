@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MEETINGS_ROUTE, REGISTER_ROUTE } from '@/utilities/localRoutes';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Login() {
     const router = useRouter()
@@ -14,6 +15,7 @@ export default function Login() {
     const [error, setError] = useState('')
     const [showPassword, setShow] = useState(false)
     const handleClickPasswordEye = () => setShow(!showPassword)
+    const {isAuthenticated, setIsAuthenticated} = useAuth()
 
 
     const handleLogin = async (e:
@@ -23,6 +25,7 @@ export default function Login() {
             e.preventDefault()
             setError('')
             await loginService({ email, password })
+            setIsAuthenticated(true)
             router.push(MEETINGS_ROUTE)
         } catch (error: Error | any) {
             setError(error.message)
