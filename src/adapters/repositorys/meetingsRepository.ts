@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react"
 // import { getMeetingSummarizedEntity } from "../entitys/meetingEntity"
 import { NEXT_PUBLIC_API_URL } from "@/utilities/environment"
 import { Meeting } from "@/domain/models/Meeting"
+import { DateTime } from "luxon"
 
 interface Props {
     name: string
@@ -83,12 +84,13 @@ export const useAddMeetingsRepository = () => {
 
     interface Props {
         name: string
-        date: Date
+        date: DateTime
         audio: Blob
     }
 
     const sendRequest = useCallback(async ({ name, date, audio }: Props) => {
-        const formatedDate = date.toISOString().split("T")[0]
+        const formatedDate = date.toUTC().toString();
+
         try {
             const formData = new FormData()
             formData.append("name", name)

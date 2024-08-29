@@ -1,4 +1,5 @@
 'use client'
+import { DateTime } from 'luxon';
 import { FormEventHandler, useEffect, useRef, useState } from "react"
 import styles from "./MeetingCard.module.css"
 import Image from "next/image"
@@ -44,10 +45,9 @@ export default function CreateMeetingPopUp({ isActivated, setIsActivated }: Prop
         const fileFormInput = (event.target as HTMLFormElement).elements.namedItem("file") as HTMLInputElement
 
         const name = nameFormInput.value
-        const date = new Date(dateFormInput.value)
+        const date = DateTime.fromISO(dateFormInput.value)
         const audio = fileFormInput.files?.[0] as Blob
 
-        console.log(error)
         sendRequest({ name, date, audio })
     }
 
@@ -107,7 +107,8 @@ export default function CreateMeetingPopUp({ isActivated, setIsActivated }: Prop
                                 className="border-2 border-white rounded-lg p-2 text-white"
                                 id="date"
                                 css={inputStyles}
-                                type="datetime-local" />
+                                type="datetime-local" 
+                                />
                         </div>
                         <div className="flex flex-col text-white">
                             <label htmlFor="file" className="text-lg">Mp3 File</label>
