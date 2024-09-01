@@ -52,7 +52,9 @@ export default function CreateMeetingPopUp({ isActivated, setIsActivated }: Prop
     }
 
 
-    if ((error === null) && (error === undefined)) {
+    console.log(error)
+    if ((error === null) || (error === undefined)) {
+        console.log("error is null")
         if (meeting !== null && meeting !== undefined) {
             router.push(MEETING_ROUTE(meeting.id))
         }

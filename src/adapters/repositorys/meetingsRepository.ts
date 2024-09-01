@@ -55,6 +55,7 @@ export const useGetMeetingRepository = ({ id }: useGetMeetingRepositoryProps) =>
 
     const fetchMeeting = useCallback(async () => {
         try {
+            setError(null)
             setLoading(true)
             const response = await fetch(`${NEXT_PUBLIC_API_URL}/meetings/${id}`,
                 {
@@ -97,6 +98,7 @@ export const useAddMeetingsRepository = () => {
             formData.append("date", formatedDate)
             formData.append("audio", audio)
 
+            setError(null)
             setLoading(true)
             const response = await fetch(`${NEXT_PUBLIC_API_URL}/meetings/`,
                 {
@@ -109,8 +111,9 @@ export const useAddMeetingsRepository = () => {
                 }
             )
             const meetingsEntity = await response.json()
+            console.log(meetingsEntity)
 
-            if (response.status !== 200) {
+            if (!response.ok) {
                 throw new Error(meetingsEntity.message)
             }
             setMeeting(meetingsEntity as Meeting)
@@ -144,6 +147,7 @@ export const useGenerateMeetingsSummaryRepository = () => {
             formData.append("date", formatedDate)
             formData.append("audio", audio)
 
+            setError(null)
             setLoading(true)
             const response = await fetch(`${NEXT_PUBLIC_API_URL}/meetings/`,
                 {
