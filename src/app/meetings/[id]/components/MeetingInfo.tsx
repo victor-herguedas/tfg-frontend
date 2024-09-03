@@ -67,7 +67,7 @@ export default function MeetingInfo({ meeting, setMeeting }: Props) {
                         }
                         {
                             meeting.todosState === TodosState.FAILED &&
-                            <div className="text-white">Failed to load todos "❌"</div>
+                            <div className="text-white">Failed to load todos ❌</div>
                         }
                     </TabPanel>
                 </TabPanels>
