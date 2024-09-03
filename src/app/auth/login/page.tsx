@@ -14,6 +14,7 @@ export default function Login() {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const [showPassword, setShow] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const handleClickPasswordEye = () => setShow(!showPassword)
     const {isAuthenticated, setIsAuthenticated} = useAuth()
 
@@ -24,12 +25,16 @@ export default function Login() {
         try {
             e.preventDefault()
             setError('')
+            setIsLoading(true)
             await loginService({ email, password })
             setIsAuthenticated(true)
             router.push(MEETINGS_ROUTE)
         } catch (error: Error | any) {
+            setIsLoading(false)
             setError(error.message)
             console.error(error)
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -81,6 +86,7 @@ export default function Login() {
                     type="submit"
                     isDisabled={!email || !password}
                     onClick={handleLogin}
+                    isLoading={isLoading}
                 >Login</Button>
             </form>
             {error && <p className="text-red-500 mt-2">{error}</p>}

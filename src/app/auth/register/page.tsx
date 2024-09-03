@@ -19,11 +19,12 @@ export default function Register() {
     const [showPassword, setShowPassword] = useState(false)
     const handleClickPasswordEye = () => setShowPassword(!showPassword)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const handleClickConfirmPasswordEye = () => setShowConfirmPassword(!showConfirmPassword)
 
     const isButtonDisabled = !email || !password || !confirmPassword || !registerCode || !name || password !== confirmPassword
 
-    const {isAuthenticated, setIsAuthenticated} = useAuth()
+    const { isAuthenticated, setIsAuthenticated } = useAuth()
 
 
     const handleRegister = async (e:
@@ -32,12 +33,15 @@ export default function Register() {
         try {
             setError('')
             e.preventDefault()
+            setIsLoading(true)
             await registerService({ name, email, password, registerCode })
             setIsAuthenticated(true)
             router.push(MEETINGS_ROUTE)
         } catch (error: Error | any) {
             setError(error.message)
             console.error(error)
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -113,6 +117,7 @@ export default function Register() {
                     type="submit"
                     onClick={handleRegister}
                     isDisabled={isButtonDisabled}
+                    isLoading={isLoading}
                 >Register</Button>
             </form>
             {error && <p className="text-red-500 mt-2">{error}</p>}
