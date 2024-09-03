@@ -2,6 +2,7 @@ import { Todo } from "@/domain/models/Meeting"
 import TodoComponent from "./Todo"
 import CreateTodo from "./CreateTodo"
 import { useState } from "react"
+import { v4 as uuidv4 } from 'uuid';
 
 export interface Props {
     todos: Todo[]
@@ -62,7 +63,7 @@ export default function TodosComponent({ todos, setTodos }: Props) {
         )
         const index = todos.findIndex(todo => todo.id === oldTodoId)
         // Añadimos el nuevo todo en la posición siguiente al todo original
-        const newTodoId = crypto.randomUUID()
+        const newTodoId = uuidv4()
         newTodos.splice(index + 1, 0, {
             id: newTodoId,
             todo: newTodo,
