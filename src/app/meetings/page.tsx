@@ -10,11 +10,16 @@ import { useState } from "react";
 export default function Home() {
     const [name, setName] = useState<string>("")
     const { meetings, loading, error } = useGetMeetingsRepository({name})
+    const [isCreateNewMeetingActivated, setIsCreateNewMeetingActivated] = useState(false)
+
+    const openCreateMeetingPopUp = () => {
+        setIsCreateNewMeetingActivated(true)
+    }
 
     return (
         <div className="text-white">
             <div className="py-5">
-                <SearchBar name={name} setName={setName}/>
+                <SearchBar name={name} setName={setName} onPlus={openCreateMeetingPopUp}/>
             </div>
             <div className="flex justify-center flex-wrap">
                 {
@@ -36,7 +41,7 @@ export default function Home() {
                             )
                         })
                 }
-                <CreateMeetingCard />
+                <CreateMeetingCard isActivated={isCreateNewMeetingActivated} setIsActivated={setIsCreateNewMeetingActivated}/>
             </div>
         </div>
     )

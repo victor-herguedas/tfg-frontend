@@ -15,11 +15,11 @@ export default function CreateTodo({ addTodo }: Props) {
 
     return (
         <div className="flex justify-start items-center gap-4">
-            <p>
+            <label htmlFor="create-todo" className="hover:cursor-pointer">
                 +
-            </p>
+            </label>
             <input
-                contentEditable
+                id="create-todo"
                 className="bg-black text-white w-full block p-2 text-wrap resize-none"
                 type="text"
                 placeholder="List element"

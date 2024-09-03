@@ -4,9 +4,12 @@ import styles from "./MeetingCard.module.css"
 import { useState } from "react";
 import CreateMeetingPopUp from "./CreateMeetingPopUp";
 
+interface Props {
+    isActivated: boolean
+    setIsActivated: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-export default function CreateMeetingCard() {
-    const [isActivated, setIsActivated] = useState(false)
+export default function CreateMeetingCard({ isActivated, setIsActivated }: Props) {
     const imageUrl = "https://cdn-icons-png.freepik.com/512/8377/8377219.png"
     const width = "375px"
     const height = "500px"

@@ -28,12 +28,6 @@ export default function AuthComponent({ children }: Props) {
         }
     }, [pathname])
 
-    useEffect(() => {
-        if (!whiteList.includes(pathname)) {
-            redirectIfNotAuthenticated()
-        }
-    }, [isAuthenticated, pathname]) 
-
     const checkAuth = async () => {
         try {
             setLoading(true)
@@ -44,27 +38,21 @@ export default function AuthComponent({ children }: Props) {
                 },
                 credentials: 'include'
             })
-
-            if (response.ok) {
-                setLoading(false)
-                setIsAuthenticated(true)
-            } else {
-                setLoading(false)
-                setIsAuthenticated(false)
+            if (!response.ok) {
+                redirectToAuth()
             }
         } catch (error) {
+            redirectToAuth()
+        } finally {
             setLoading(false)
-            setIsAuthenticated(false)
         }
     }
 
-    const redirectIfNotAuthenticated = () => {
-        if (!isAuthenticated) {
-            router.push('/auth/login')
-        }
+    const redirectToAuth = () => {
+        router.push('/auth/login')
     }
 
-    if (isAuthenticated == true || whiteList.includes(pathname)) {
+    if (loading == false || whiteList.includes(pathname)) {
         return (
             <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
                 {children}
