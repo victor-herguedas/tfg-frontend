@@ -81,13 +81,13 @@ export default function CreateMeetingPopUp({ isActivated, setIsActivated }: Prop
                         <div className={`${styles.closeBtn} hover:cursor-pointer text-2xl`} onClick={() => setIsActivated(!isActivated)}>&times;</div>
                     </div>
                     <h2 className="text-2xl mb-10">ADD A NEW MEETING</h2>
-                    <Image
+                    {/* <Image
                         className='mb-5'
                         src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3ZuOTF5bWN4Z2w5N3ducGluNDA1djU3YmNpb3dpM2lubDR4dWQzbyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/FlWgXEtj5aM5G/giphy.gif"
                         alt="fire room with a dog saying its fine"
                         width={400}
                         height={400}
-                    />
+                    /> */}
                     <form
                         onSubmit={addMeetingHandler}
                         className="flex flex-col gap-y-6 ">

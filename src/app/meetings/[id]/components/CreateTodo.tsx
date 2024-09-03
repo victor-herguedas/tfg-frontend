@@ -8,20 +8,19 @@ interface Props {
 }
 
 export default function CreateTodo({ addTodo, setFocus, moveKeyUpDown }: Props) {
-    const [value, setValue] = useState<string>("")
-    const handleCreateTodo = (e: KeyboardEvent<HTMLInputElement>) => {
+    const [value] = useState<string>("")
+    const handleOnKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "ArrowUp") {
             e.preventDefault();
             moveKeyUpDown("CREATE_TODO", "UP");
         } else if (e.key === "ArrowDown") {
             e.preventDefault();
             moveKeyUpDown("CREATE_TODO", "DOWN");
-        } else {
-            const value = e.currentTarget.value
-            addTodo(value)
-            setValue("")
         }
+    }
 
+    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        addTodo(e.target.value)
     }
 
     const ref = useRef<HTMLInputElement>(null);
@@ -45,7 +44,8 @@ export default function CreateTodo({ addTodo, setFocus, moveKeyUpDown }: Props) 
                 type="text"
                 placeholder="List element"
                 value={value}
-                onKeyDown={(e) => { handleCreateTodo(e) }}
+                onKeyDown={(e) => { handleOnKeyDown(e) }}
+                onChange={(e) => { handleOnChange(e) }}
             >
             </input>
         </div>

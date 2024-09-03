@@ -44,13 +44,13 @@ export default function Login() {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen text-white">
             <h1 className="text-4xl mb-10">Login Page</h1>
-            <Image
+            {/* <Image
                 className='mb-10'
                 src="https://media2.giphy.com/media/QMHoU66sBXqqLqYvGO/giphy.gif?cid=6c09b952iud88a7u4lufuh2ehvyq0mz86o3i32g1dfrwpzo3&ep=v1_gifs_search&rid=giphy.gif&ct=g"
                 alt="fire room with a dog saying its fine"
                 width={400}
                 height={400}
-            />
+            /> */}
             <form className="flex flex-col">
                 <label htmlFor='email'>Email</label>
                 <Input

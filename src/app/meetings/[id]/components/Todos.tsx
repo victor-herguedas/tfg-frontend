@@ -113,6 +113,12 @@ export default function TodosComponent({ todos, setTodos }: Props) {
             }
             return todo
         }).filter(todo => todo !== null) as Todo[]
+        setFocusConfig(
+            {
+                todoFocusId: newTodos[index - 1].id,
+                cursorPosition: "END"
+            }
+        )
         setTodos(newTodos)
     }
 

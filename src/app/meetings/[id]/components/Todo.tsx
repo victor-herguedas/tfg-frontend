@@ -96,6 +96,11 @@ export default function TodoComponent({
             } else if (todo.todo === "") {
                 e.preventDefault();
                 deleteTodo(todo.id);
+            } else {
+                setTodo({
+                    ...todo,
+                    todo: ref.current?.textContent || "",
+                });
             }
         } else if (e.key === "ArrowUp") {
             e.preventDefault();
@@ -108,7 +113,7 @@ export default function TodoComponent({
         else {
             setTodo({
                 ...todo,
-                todo: newContent,
+                todo: ref.current?.textContent || "",
             });
         }
     };
