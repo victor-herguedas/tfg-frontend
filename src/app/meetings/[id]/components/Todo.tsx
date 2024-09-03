@@ -12,8 +12,10 @@ interface Props {
     todo: Todo;
     setTodo: (todo: Todo) => void;
     deleteTodo: (id: string) => void;
-    splitTodo: (oldTodoId: string, oldTodo: string, newTodo: string ) => void;
+    splitTodo: (oldTodoId: string, oldTodo: string, newTodo: string) => void;
     focusProps: focusProps;
+    joinTodo: (id: string) => void;
+    moveKeyUpDown: (id: string, direction: "UP" | "DOWN") => void;
 }
 
 export default function TodoComponent({
@@ -21,6 +23,8 @@ export default function TodoComponent({
     setTodo,
     deleteTodo,
     splitTodo,
+    joinTodo,
+    moveKeyUpDown,
     focusProps: { focusOnRender, stopFocusOnRender, cursorPosition: cursorStartPosition },
 }: Props) {
     const ref = useRef<HTMLDivElement>(null);
@@ -69,45 +73,52 @@ export default function TodoComponent({
         return preCaretRange.toString().length;
     };
 
-    const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         const newContent = e.currentTarget.textContent || "";
 
-        // Store the cursor position before updating the state
+        // Guardar la posición del cursor antes de actualizar el estado
         if (ref.current) {
             cursorPosition.current = getCaretPosition(ref.current);
         }
 
-        setTodo({
-            ...todo,
-            todo: newContent,
-        });
-    };
-
-    useEffect(() => {
-        if (ref.current && cursorPosition.current !== null) {
-            // Restore the cursor position after the state updates
-            setCaretPosition(ref.current, cursorPosition.current);
-        }
-    }, [todo.todo]);
-
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        // Si se presiona Enter
         if (e.key === "Enter") {
-            if (ref.current) {
-                cursorPosition.current = getCaretPosition(ref.current);
-            }
-            // Separate the text in 2 by cursor position and create a new todo with the second part
-            const newContent = e.currentTarget.textContent || "";
             const oldTodo = newContent.slice(0, cursorPosition.current || 0);
             const newTodo = newContent.slice(cursorPosition.current || 0, newContent.length);
             e.preventDefault();
             splitTodo(todo.id, oldTodo, newTodo);
         }
-
-        if (e.key === "Backspace" && todo.todo === "") {
+        // Si se presiona Backspace y el todo está vacío
+        else if (e.key === "Backspace") {
+            if (cursorPosition.current === 0 && todo.todo != "") {
+                e.preventDefault();
+                joinTodo(todo.id);
+            } else if (todo.todo === "") {
+                e.preventDefault();
+                deleteTodo(todo.id);
+            }
+        } else if (e.key === "ArrowUp") {
             e.preventDefault();
-            deleteTodo(todo.id);
+            moveKeyUpDown(todo.id, "UP");
+        } else if (e.key === "ArrowDown") {
+            e.preventDefault();
+            moveKeyUpDown(todo.id, "DOWN");
+        }
+        // Para cualquier otra tecla, actualiza el estado del todo
+        else {
+            setTodo({
+                ...todo,
+                todo: newContent,
+            });
         }
     };
+
+    useEffect(() => {
+        if (ref.current && cursorPosition.current !== null) {
+            // Restaurar la posición del cursor después de actualizar el estado
+            setCaretPosition(ref.current, cursorPosition.current);
+        }
+    }, [todo.todo]);
 
     return (
         <div className="flex justify-start items-start gap-4">
@@ -123,7 +134,6 @@ export default function TodoComponent({
                 ref={ref}
                 className="bg-black text-white w-full block p-0 text-wrap focus:outline-none"
                 contentEditable
-                onInput={handleInput}
                 onKeyDown={handleKeyDown}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
@@ -131,7 +141,6 @@ export default function TodoComponent({
             >
                 {todo.todo}
             </div>
-            {/* Icono de cerrar, visible solo cuando el div está enfocado */}
             <SmallCloseIcon
                 onClick={() => deleteTodo(todo.id)}
                 className={`hover:cursor-pointer transition-opacity duration-300 ${isFocused ? "opacity-100" : "opacity-0"
