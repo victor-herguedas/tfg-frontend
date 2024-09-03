@@ -39,7 +39,7 @@ export default function TodosComponent({ todos, setTodos }: Props) {
 
     const addTodo = (todo: string, focusBegining?: boolean) => {
         const newTodo: Todo = {
-            id: crypto.randomUUID(),
+            id: uuidv4(),
             todo,
             done: false
         }

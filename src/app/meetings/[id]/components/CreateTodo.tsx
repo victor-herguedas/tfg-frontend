@@ -1,5 +1,5 @@
 import { Todo } from "@/domain/models/Meeting";
-import { KeyboardEvent, RefObject, useEffect, useRef, useState } from "react";
+import { KeyboardEvent, RefObject, use, useEffect, useRef, useState } from "react";
 
 interface Props {
     addTodo: (todo: string) => void
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function CreateTodo({ addTodo, setFocus, moveKeyUpDown }: Props) {
-    const [value] = useState<string>("")
+    const [value, setValue] = useState<string>("")
     const handleOnKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "ArrowUp") {
             e.preventDefault();
@@ -20,8 +20,14 @@ export default function CreateTodo({ addTodo, setFocus, moveKeyUpDown }: Props) 
     }
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        addTodo(e.target.value)
+        setValue(e.target.value)
     }
+
+    useEffect(() => {
+        if (value === "") return
+        addTodo(value)
+        setValue("")
+    }, [value])
 
     const ref = useRef<HTMLInputElement>(null);
 
